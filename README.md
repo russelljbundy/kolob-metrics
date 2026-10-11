@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Kolob Metrics
 
-## Getting Started
+The same measure for every side of the Mormon conversation.
 
-First, run the development server:
+Kolob Metrics compares how four groups of online communities talk: ex-member, mixed, faithful Latter-day Saint, and a general religion baseline. Every metric is computed the same way for all four and shown side by side: topic mix, how often factual claims cite a source, an echo-chamber score, and logical-fallacy rates.
+
+> **Status:** early. The dashboard currently shows **sample data**. The YouTube comment collector works; classification is next.
+
+## Principles
+
+- **Symmetric.** One published rubric, applied identically to every group. A number only means something next to the others.
+- **Aggregate only.** No usernames or commenter IDs are stored or shown, and no individual is singled out.
+- **Short retention.** Raw comment text is deleted 30 days after collection. Only aggregate results are kept.
+- **Checkable.** The rubric, channel choices and code are public. A metric is published only if it passes reliability thresholds set in advance.
+
+## Docs
+
+- [`docs/fallacy-framework.md`](docs/fallacy-framework.md): what counts as a fallacy, the 15-type taxonomy, the labeling protocol and the validation plan.
+- [`docs/channel-selection.md`](docs/channel-selection.md): which YouTube channels represent each group, why, and the fixed-quota sampling design.
+
+## Data sources
+
+- **YouTube Data API v3**, read-only, from the channels in `lib/channels.ts`.
+- **Reddit:** r/exmormon, r/mormon, r/latterdaysaints and r/religion, pending Reddit Data API approval.
+
+## Running locally
+
+Requires Node 24.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev                          # dashboard at http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+To collect comments, put a YouTube Data API key in `.env.local`:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+YOUTUBE_API_KEY=...
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Then:
 
-## Learn More
+```bash
+npm run collect                      # previous calendar month, all channels
+npm run collect -- --month 2026-09   # a specific month
+npm run collect -- --dry-run         # fetch and sample without saving
+npm run purge                        # delete comment text older than 30 days
+```
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Collected data goes to `data/kolob.db` (SQLite, git-ignored).
