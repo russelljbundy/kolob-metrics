@@ -25,7 +25,7 @@ export const FALLACY_TYPES = [
   "Strawman",
   "Hasty generalization",
   "Genetic fallacy",
-  "Appeal to emotion",
+  "Poisoning the well",
 ];
 
 export const fallacyRates = (() => {
