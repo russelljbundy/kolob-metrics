@@ -151,7 +151,6 @@ export async function labelComment(model: string, input: LabelInput) {
       providerOptions: { anthropic: { cacheControl: { type: "ephemeral" } } },
     },
     prompt,
-    temperature: 0,
     output: Output.object({ schema: labelSchema }),
   });
   return { output: result.output, usage: result.usage, warnings: result.warnings, text, hasParent: !!parent };
