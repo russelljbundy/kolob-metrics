@@ -8,13 +8,16 @@
     "start": "next start",
     "lint": "eslint",
     "collect": "tsx scripts/collect.mts",
-    "purge": "tsx scripts/purge.mts"
+    "purge": "tsx scripts/purge.mts",
+    "label": "tsx scripts/label.mts"
   },
   "dependencies": {
+    "ai": "^7.0.137",
     "next": "16.4.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
-    "recharts": "^2.15.4"
+    "recharts": "^2.15.4",
+    "zod": "^4.6.6"
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",
